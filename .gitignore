@@ -1,0 +1,8 @@
+*.[oa]
+*.elf
+*.map
+*.hex
+*.dep
+# ignore the eclipse files too
+.cproject
+.project
