@@ -9,3 +9,7 @@
  * License:
  *      GNU General Public License (see LICENSE in root folder)
  */
+
+#include "constants.h"
+#include "motor.h"
+#include "sensor.h"

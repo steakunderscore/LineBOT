@@ -10,4 +10,9 @@
  *      GNU General Public License (see LICENSE in root folder)
  */
 
-#include "sensor.h"
+#define true   1
+#define false  0
+
+#define LEFT   2
+#define RIGHT  3
+#define CENTER 4

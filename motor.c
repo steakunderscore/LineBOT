@@ -9,3 +9,5 @@
  * License:
  *      GNU General Public License (see LICENSE in root folder)
  */
+
+#include "motor.h"
