@@ -13,4 +13,4 @@
 #include "constants.h"
 
 // Starts the robot turning in the specified direction.
-void m_turn(unsigned int direction);
+void m_turn(unsigned char direction);

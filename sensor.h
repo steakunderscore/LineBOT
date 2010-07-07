@@ -18,4 +18,4 @@
 
 // Checks the given sensor and returns S_WHITE, S_BLACK or S_GRAY depending on
 // the result.
-unsigned int s_check(unsigned int sensor);
+unsigned char s_check(unsigned char sensor);
