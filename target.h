@@ -1,0 +1,53 @@
+/* File:   target.h
+   Author: M. P. Hayes, UCECE
+   Date:   15 May 2007
+   Descr: 
+*/
+#ifndef TARGET_H
+#define TARGET_H
+
+/* CPU clock frequency.  */
+#define F_CPU 12000000
+
+
+/* Buttons.  */
+#define BUTTON1_PIO PIO_DEFINE(PORT_B, 4)
+#define BUTTON2_PIO PIO_DEFINE(PORT_B, 0)
+
+
+/* LED matrix columns.  */
+#define LEDMAT_COL1 PIO_DEFINE(PORT_B, 1)
+#define LEDMAT_COL2 PIO_DEFINE(PORT_B, 2)
+#define LEDMAT_COL3 PIO_DEFINE(PORT_B, 3)
+#define LEDMAT_COL4 PIO_DEFINE(PORT_D, 0)
+#define LEDMAT_COL5 PIO_DEFINE(PORT_D, 4)
+
+#define LEDMAT_COLS {LEDMAT_COL1, LEDMAT_COL2, LEDMAT_COL3, LEDMAT_COL4, LEDMAT_COL5}
+#define LEDMAT_COLS_NUM 5
+
+
+/* LED matrix rows.  */
+#define LEDMAT_ROW1 PIO_DEFINE(PORT_C, 2)
+#define LEDMAT_ROW2 PIO_DEFINE(PORT_C, 3)
+#define LEDMAT_ROW3 PIO_DEFINE(PORT_C, 4)
+#define LEDMAT_ROW4 PIO_DEFINE(PORT_C, 5)
+#define LEDMAT_ROW5 PIO_DEFINE(PORT_D, 5)
+#define LEDMAT_ROW6 PIO_DEFINE(PORT_D, 6)
+#define LEDMAT_ROW7 PIO_DEFINE(PORT_D, 7)
+
+#define LEDMAT_ROWS {LEDMAT_ROW1, LEDMAT_ROW2, LEDMAT_ROW3, LEDMAT_ROW4, LEDMAT_ROW5, LEDMAT_ROW6, LEDMAT_ROW7}
+#define LEDMAT_ROWS_NUM 7
+
+
+/** Heater MOSFET.  */
+#define HEATER_PIO PIO_DEFINE(PORT_C, 0)
+
+
+/** Test LED.  */
+#define LED_PIO PIO_DEFINE(PORT_B, 4)
+
+
+/** One wire bus to temperature sensor.  */
+#define U1WIRE_PIO PIO_DEFINE(PORT_B, 5)
+
+#endif
