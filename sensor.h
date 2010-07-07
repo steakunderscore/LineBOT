@@ -12,9 +12,9 @@
 
 #include "constants.h"
 
-#define S_WHITE 1
-#define S_BLACK 2
-#define S_GRAY  3
+#define S_WHITE ((unsigned char) 1)
+#define S_BLACK ((unsigned char) 2)
+#define S_GRAY  ((unsigned char) 3)
 
 // Checks the given sensor and returns S_WHITE, S_BLACK or S_GRAY depending on
 // the result.

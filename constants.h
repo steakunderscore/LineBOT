@@ -10,9 +10,9 @@
  *      GNU General Public License (see LICENSE in root folder)
  */
 
-#define true   1
-#define false  0
+#define true   ((unsigned char) 1)
+#define false  ((unsigned char) 0)
 
-#define LEFT   2
-#define RIGHT  3
-#define CENTER 4
+#define LEFT   ((unsigned char) 2)
+#define RIGHT  ((unsigned char) 3)
+#define CENTER ((unsigned char) 4)
