@@ -15,7 +15,7 @@
 void straightAhead() {
     m_straight();
     
-    while (s_check(S_LEFT) == S_WHITE && s_check(S_RIGHT) == S_WHITE) {
+    while (s_check(LEFT) == S_WHITE && s_check(RIGHT) == S_WHITE) {
         /* DO NOTHING */
     }
     
