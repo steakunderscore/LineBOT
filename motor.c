@@ -18,7 +18,7 @@
 void m_initialize( void )
 {
     /*
-       TCCR0 - Timer Counter Control Register (TIMER0)
+       TCCR1A - Timer Counter Control Register (TIMER1A)
        -----------------------------------------------
        BITS DESCRIPTION
 
@@ -45,7 +45,7 @@ void m_initialize( void )
      */
 
 
-    TCCR0|=(1<<WGM00)|(1<<WGM01)|(1<<COM01)|(1<<CS00)|(1<<CS01);
+    TCCR1A|=(1<<WGM00)|(1<<WGM01)|(1<<COM01)|(1<<CS00)|(1<<CS01);
 
     // Set OC1A and OC1B pins as the outputs.
 
@@ -57,7 +57,7 @@ void m_initialize( void )
 }
 
 void m_foward(uint8_t speed) {
-    // Set both motors in foward direction
+    // Set both motors in forward direction
     PD0 = 1;
     PD1 = 1;
 
@@ -67,7 +67,7 @@ void m_foward(uint8_t speed) {
 }
 
 void m_reverse(uint8_t speed) {
-    // Set both motors in foward direction
+    // Set both motors in forward direction
     PD0 = 0;
     PD1 = 0;
 
