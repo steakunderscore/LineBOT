@@ -12,9 +12,6 @@
 
 #include "constants.h"
 
-#define LEFT l
-#define RIGHT r
-
 // Initialize the motor controller interface
 void m_initialize( void );
 

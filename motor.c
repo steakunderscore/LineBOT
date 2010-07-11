@@ -26,7 +26,7 @@ void m_initialize( void )
        NO:   NAME   DESCRIPTION
        --------------------------
        BIT 7 : FOC0   Force Output Compare [Not used in this]
-       BIT 6 : WGM00  Wave form generartion mode [SET to 1]
+       BIT 6 : WGM00  Wave form generation mode [SET to 1]
        BIT 5 : COM01  Compare Output Mode        [SET to 1]
        BIT 4 : COM00  Compare Output Mode        [SET to 0]
        
@@ -54,6 +54,25 @@ void m_initialize( void )
     //Set the output to off.
     OC1A=0;
     OC1B=0;
+}
+
+void m_turn(unsigned char direction) {
+    // Stop the motors first to stop jittering
+    OC1A = 0xFF;
+    OC1B = 0xFF;
+    if (direction == LEFT) {
+        // Set the motors in opposite directions
+        PD0 = 0;
+        PD1 = 1;
+    }
+    else if (direction == RIGHT) {
+        // Set the motors in opposite directions
+        PD0 = 1;
+        PD1 = 0;
+    }
+    // turn both the motors on
+    OC1A = 0xFF;
+    OC1B = 0xFF;
 }
 
 void m_foward(uint8_t speed) {
