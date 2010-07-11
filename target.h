@@ -1,50 +1,32 @@
-/* File:   target.h
-   Author: M. P. Hayes, UCECE
-   Date:   15 May 2007
-   Descr: 
-*/
+/*
+ * Authors:
+ *      Wim Looman
+ *      Henry Jenkins
+ *      Kate Markman
+ *      Ben Snalam
+ * Copyright:
+ *      Copyright (c) 2010 Wim Looman, Henry Jenkins, Kate Markman, Ben Snalam
+ * License:
+ *      GNU General Public License (see LICENSE in root folder)
+ */
+
 #ifndef TARGET_H
 #define TARGET_H
 
 
-/* Buttons.  */
-#define BUTTON1_PIO PIO_DEFINE(PORT_B, 4)
-#define BUTTON2_PIO PIO_DEFINE(PORT_B, 0)
+/* Motor Driver Interface */
+#define MOTOR_ENLEFT  PIO_DEFINE(PORT_B, 1)
+#define MOTOR_ENRIGHT PIO_DEFINE(PORT_B, 2)
+#define MOTOR_EN {MOTOR_ENLEFT, MOTOR_ENRIGHT}
 
+#define MOTOR_DRLEFT  PIO_DEFINE(PORT_D, 0)
+#define MOTOR_DRRIGHT PIO_DEFINE(PORT_D, 1)
+#define MOTOR_DR {MOTOR_DRLEFT, MOTOR_DRRIGHT}
 
-/* LED matrix columns.  */
-#define LEDMAT_COL1 PIO_DEFINE(PORT_B, 1)
-#define LEDMAT_COL2 PIO_DEFINE(PORT_B, 2)
-#define LEDMAT_COL3 PIO_DEFINE(PORT_B, 3)
-#define LEDMAT_COL4 PIO_DEFINE(PORT_D, 0)
-#define LEDMAT_COL5 PIO_DEFINE(PORT_D, 4)
-
-#define LEDMAT_COLS {LEDMAT_COL1, LEDMAT_COL2, LEDMAT_COL3, LEDMAT_COL4, LEDMAT_COL5}
-#define LEDMAT_COLS_NUM 5
-
-
-/* LED matrix rows.  */
-#define LEDMAT_ROW1 PIO_DEFINE(PORT_C, 2)
-#define LEDMAT_ROW2 PIO_DEFINE(PORT_C, 3)
-#define LEDMAT_ROW3 PIO_DEFINE(PORT_C, 4)
-#define LEDMAT_ROW4 PIO_DEFINE(PORT_C, 5)
-#define LEDMAT_ROW5 PIO_DEFINE(PORT_D, 5)
-#define LEDMAT_ROW6 PIO_DEFINE(PORT_D, 6)
-#define LEDMAT_ROW7 PIO_DEFINE(PORT_D, 7)
-
-#define LEDMAT_ROWS {LEDMAT_ROW1, LEDMAT_ROW2, LEDMAT_ROW3, LEDMAT_ROW4, LEDMAT_ROW5, LEDMAT_ROW6, LEDMAT_ROW7}
-#define LEDMAT_ROWS_NUM 7
-
-
-/** Heater MOSFET.  */
-#define HEATER_PIO PIO_DEFINE(PORT_C, 0)
-
-
-/** Test LED.  */
-#define LED_PIO PIO_DEFINE(PORT_B, 4)
-
-
-/** One wire bus to temperature sensor.  */
-#define U1WIRE_PIO PIO_DEFINE(PORT_B, 5)
+/* Sensors inputs */
+#define SENSOR0 PIO_DEFINE(PORT_C, 0)
+#define SENSOR1 PIO_DEFINE(PORT_C, 1)
+#define SENSOR2 PIO_DEFINE(PORT_C, 2)
+#define SENSORS {SENSOR0, SENSOR1, SENSOR2}
 
 #endif
