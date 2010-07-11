@@ -9,3 +9,20 @@
  * License:
  *      GNU General Public License (see LICENSE in root folder)
  */
+
+// Include Standard files
+#include "algorithm.h"
+#include "config.h"
+#include "constants.h"
+#include "delay.h"
+#include "motor.h"
+#include "pio.h"
+#include "sensor.h"
+#include "target.h"
+
+/* Software entry point
+ */
+int main(void)
+{
+    // Do nothing for now
+}
