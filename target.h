@@ -6,9 +6,6 @@
 #ifndef TARGET_H
 #define TARGET_H
 
-/* CPU clock frequency.  */
-#define F_CPU 12000000
-
 
 /* Buttons.  */
 #define BUTTON1_PIO PIO_DEFINE(PORT_B, 4)
