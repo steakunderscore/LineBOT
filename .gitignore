@@ -3,6 +3,10 @@
 *.map
 *.hex
 *.dep
+*.lst
+*.eep
+*.lss
+*.sym
 # ignore the eclipse files too
 .cproject
 .project
