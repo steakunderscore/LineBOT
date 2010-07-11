@@ -11,3 +11,8 @@
  */
 
 #include "sensor.h"
+unsigned char s_check(unsigned char sensor)
+{
+    while(1)
+        break;
+}
