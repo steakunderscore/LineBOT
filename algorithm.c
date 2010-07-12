@@ -12,104 +12,18 @@
 
 #include "algorithm.h"
 
-#define UNKNOWN  ((unsigned char) 0)
-
-// The types of the cells.
-#define STRAIGHT ((unsigned char) 1)
-#define CORNER   ((unsigned char) 2)
-#define T_JUNCT  ((unsigned char) 3)
-#define CROSS    ((unsigned char) 4)
-
-/* The orientation of the cells, use the following tables to determine the layouts:
- *
- * STRAIGHT piece:
- *  NORTH/SOUTH EAST/WEST
- *    +-----+    +-----+
- *    | | | |    |     |
- *    | | | |    |-----|
- *    | | | |    |     |
- *    | | | |    |-----|
- *    | | | |    |     |
- *    +-----+    +-----+
- * CORNER piece:
- *   EAST    NORTH   WEST    SOUTH
- *  +-----+ +-----+ +-----+ +-----+
- *  |     | | | | | | | | | |     |
- *  | +---| | | +-| |-+ | | |---+ |
- *  | |   | | |   | |   | | |   | |
- *  | | +-| | +---| |---+ | |-+ | |
- *  | | | | |     | |     | | | | |
- *  +-----+ +-----+ +-----+ +-----+
- * T_JUNCT piece:
- *   EAST    NORTH   WEST    SOUTH
- *  +-----+ +-----+ +-----+ +-----+
- *  | | | | | | | | | | | | |     |
- *  | | +-| |-+ +-| |-+ | | |-----|
- *  | |   | |     | |   | | |     |
- *  | | +-| |-----| |-+ | | |-+ +-|
- *  | | | | |     | | | | | | | | |
- *  +-----+ +-----+ +-----+ +-----+
- * CROSS doesn't matter:
- *  NORTH/SOUTH/EAST/WEST
- *         +-----+
- *         | | | |
- *         |-+ +-|
- *         |     |
- *         |-+ +-|
- *         | | | |
- *         +-----+
- */
-#define NORTH ((unsigned char) 1)
-#define EAST  ((unsigned char) 2)
-#define WEST  ((unsigned char) 3)
-#define SOUTH ((unsigned char) 4)
-
-typedef struct cell {
-    unsigned char type;
-    unsigned char orient;
-} Cell;
-
-static struct loc {
-    unsigned char x;
-    unsigned char y;
-    unsigned char orient;
-} location = {50, 50, NORTH};
-
-static Cell map[100][100];
-
-
-void determineCell() {
-
-}
-
-
-
-
-/*
-void straightAhead() {
-    m_straight();
-    
-    while (s_check(LEFT) == S_WHITE && s_check(RIGHT) == S_WHITE) {
-        // DO NOTHING
-    }
-    
-    m_stop();
-    
-    if (!checkForStraight(true)) {
-        //We're at a lefthand corner, a lefthand T junction or a cross junction.
-        if (!checkFor
-    }
-    else if (!checkForStraight(false)) {
-        //We're at a righthand corner, a righthand T junction or a cross junction.
-    }
+void success() {
+    // Celebrate
 }
 
 // Use true for left edge, false for right edge.
 // Returns true for back on track, false if there is a problem.
-unsigned int checkForStraight(unsigned int direction, unsigned int checkOther) {
-    unsigned int firstDirection = direction ? LEFT  : RIGHT;
-    unsigned int otherDirection = direction ? RIGHT : LEFT;
+unsigned char checkForStraight(unsigned char direction, unsigned char checkOther) {
+    unsigned char firstDirection = direction ? LEFT  : RIGHT;
+    unsigned char otherDirection = direction ? RIGHT : LEFT;
     
+    m_stop();
+
     if (s_check(firstDirection) == S_BLACK && s_check(otherDirection) == S_WHITE) {
         m_turn(firstDirection);
         while (s_check(firstDirection) == S_BLACK && s_check(otherDirection) == S_WHITE) {
@@ -127,4 +41,33 @@ unsigned int checkForStraight(unsigned int direction, unsigned int checkOther) {
     else {
         return true;
     }
-}*/
+}
+
+void straightAhead() {
+    m_straight();
+    while (1) {
+        if (s_check(CENTER) == S_GRAY) {
+            m_stop();
+            success();
+        }
+
+        if (s_check(CENTER) == S_WHITE) {
+            m_straight(20);
+
+            if (s_check(CENTER) == S_WHITE)
+                turnAround();
+
+            m_straight();
+        }
+        
+        if (s_check(LEFT) != S_WHITE && !checkForStraight(true)) {
+                //We're at a lefthand corner, a lefthand T junction or a cross junction.
+                turnLeft();
+        }
+
+        if (s_check(RIGHT) != S_WHITE && !checkForStraight(false)) {
+                //We're at a righthand corner, a righthand T junction or a cross junction.
+        }
+    }
+}
+
