@@ -45,10 +45,35 @@ MUX3->0 :
 0110 = ADC6
 0111 = ADC7 - check to see which pins using.'
 */
+
+static uint8_t s_left_white; //white threshold for white sensor, calculated from initialisation
+static uint8_t s_right_white;
+static uint8_t s_centre_black
+
 unsigned char s_check(unsigned char sensor)
 {
-    uint8_t result= 0;
-                            //check addresses are correct
+    uint8_t s_result= 0;
+    uint8_t s_adc = s_value(sensor);                       //check addresses are correct
+      
+    
+    if(s_adc < GREY_THRESH)
+    {    
+        s_result = S_BLACK;
+    }
+    else if(s_adc < WHITE_THRESH)
+    {
+        s_result = S_GREY;
+    }    
+    else
+        s_result = S_WHITE;
+    
+    return s_result;
+}
+
+uint8_t s_value(uint8_t sensor)
+{
+    
+    //check addresses are correct
     if(sensor == LEFT) 
     {
         ADMUX = (BIT(ADLAR) | BIT(MUX1));
@@ -71,22 +96,32 @@ unsigned char s_check(unsigned char sensor)
         continue;
     }
     
-    
-    if(ADCH < GREY_THRESH)
-    {    
-        result = S_BLACK;
-    }
-    else if(ADCH < WHITE_THRESH)
-    {
-        result = S_GREY;
-    }    
-    else
-        result = S_WHITE;
-    
-    return result;
+    return ADHC;
 }
 
 void s_initialise()
 {
     ADCSRA = BIT(ADEN);
+    
+    uint16_t s_average = 0;
+    uint8_t s_index
+    for(i = 0; i <= 10; i++)
+    {
+        s_average = s_average + s_value(LEFT);
+    }    
+    s_left_white = s_average / 10;
+    
+    s_average = 0;
+    for(i = 0; i <= 10; i++)
+    {
+        s_average = s_average + s_value(CENTER);
+    }    
+    s_centre_black = s_average / 10;
+    
+    s_average = 0;
+    for(i = 0; i <= 10; i++)
+    {
+        s_average = s_average + s_value(RIGHT);
+    }    
+    s_centre_black = s_average / 10;
 }
