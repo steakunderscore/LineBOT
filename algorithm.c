@@ -13,6 +13,7 @@
 #include "algorithm.h"
 
 void success() {
+    m_stop();
     // Celebrate
 }
 
@@ -31,10 +32,10 @@ unsigned char checkForStraight(unsigned char direction, unsigned char checkOther
         }
         m_stop();
         
-        if (s_check(firstDirection) == S_WHITE && s_check(otherDirection) == S_WHITE) {
+        if (s_check(firstDirection) == S_WHITE) {
             return true;
         }
-        if (s_check(firstDirection) == S_BLACK && s_check(otherDirection) == S_WHITE) {
+        if (s_check(firstDirection) == S_BLACK) {
             return false;
         }
     }
@@ -43,30 +44,63 @@ unsigned char checkForStraight(unsigned char direction, unsigned char checkOther
     }
 }
 
+void turnAround() {
+    m_reverse();
+    while (s_check(CENTER) == S_WHITE) {
+        // DO NOTHING
+    }
+    m_reverse(10);
+
+    m_turn(LEFT);
+    while (s_check(LEFT) == S_WHITE) {
+        // DO NOTHING
+    }
+    while (s_check(LEFT) == S_BLACK) {
+        // DO NOTHING
+    }
+
+    m_stop();
+}
+
+void turnLeft() {
+
+}
+
+void turnRight() {
+
+}
+
 void straightAhead() {
-    m_straight();
+    unsigned char left, center, right;
     while (1) {
-        if (s_check(CENTER) == S_GRAY) {
+        m_straight();
+
+        left = s_check(LEFT);
+        center = s_check(CENTER);
+        right = s_check(RIGHT);
+
+        if (center == S_GRAY) {
             m_stop();
             success();
         }
 
-        if (s_check(CENTER) == S_WHITE) {
+        if (center == S_WHITE) {
+            m_stop();
             m_straight(20);
 
             if (s_check(CENTER) == S_WHITE)
                 turnAround();
-
-            m_straight();
+            continue();
         }
         
-        if (s_check(LEFT) != S_WHITE && !checkForStraight(true)) {
+        if (left != S_WHITE && !checkForStraight(true)) {
                 //We're at a lefthand corner, a lefthand T junction or a cross junction.
                 turnLeft();
         }
 
-        if (s_check(RIGHT) != S_WHITE && !checkForStraight(false)) {
+        if (right != S_WHITE && !checkForStraight(false)) {
                 //We're at a righthand corner, a righthand T junction or a cross junction.
+                turnRight();
         }
     }
 }
