@@ -15,6 +15,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+#define FOWARD_DELAY_TIME 100
+
 void m_initialize( void )
 {
     /* Setup the output for the motor direction control */
@@ -75,10 +77,32 @@ void m_initialize( void )
     TCNT1 = 0;
 }
 
+void m_turn(unsigned char direction) {
+    // Stop the motors first to stop jittering
+    m_stop();
+
+    //Make sure both of the motors are if forward direction
+    pio_output_high (MOTOR_DRLEFT);
+    pio_output_high (MOTOR_DRRIGHT);
+    
+    switch (direction) {
+        case LEFT:
+            OCR1A = 0x0000;
+            OCR1B = 0xFFFF;
+            break;
+        case RIGHT:
+            OCR1A = 0xFFFF;
+            OCR1B = 0x0000;
+            break;  
+        default:
+            break;
+    }
+}
+
 void m_rotate(unsigned char direction) {
     // Stop the motors first to stop jittering
-    OCR1A = 0x00;
-    OCR1B = 0x00;
+    m_stop();
+    
     if (direction == LEFT) {
         // Set the motors in opposite directions
         pio_output_low (MOTOR_DRLEFT);
@@ -90,18 +114,29 @@ void m_rotate(unsigned char direction) {
         pio_output_low (MOTOR_DRRIGHT);
     }
     // turn both the motors on
-    OCR1A = 0xFF;
-    OCR1B = 0xFF;
+    OCR1A = 0xFFFF;
+    OCR1B = 0xFFFF;
 }
 
-void m_fowards( void ) {
-    // Set both motors in forward direction
-    pio_output_high (MOTOR_DRLEFT);
-    pio_output_high (MOTOR_DRRIGHT);
+void m_forwards( void ) {
+    // Set both motors in forwards direction
+    pio_output_low (MOTOR_DRLEFT);
+    pio_output_low (MOTOR_DRRIGHT);
 
-    // Adjust the motor speeds.
-    OCR1A=0xFF;
-    OCR1B=0xFF;
+    // Adjust the motor speeds to full speed
+    OCR1A=0xFFFF;
+    OCR1B=0xFFFF;
+}
+
+void m_forwardsD(unsigned char distance) {
+    int i;
+    m_forwards();
+    
+    // Wait for a distance in mm time to shift
+    for (i = 0; i < distance; i++) {
+        _delay_ms(FOWARD_DELAY_TIME);
+    }
+    m_stop();
 }
 
 void m_reverse( void ) {
@@ -110,12 +145,36 @@ void m_reverse( void ) {
     pio_output_low (MOTOR_DRRIGHT);
 
     // Adjust the motor speeds.
-    OCR1A=0xFF;
-    OCR1B=0xFF;
+    OCR1A=0xFFFF;
+    OCR1B=0xFFFF;
+}
+
+void m_reverseD(unsigned char distance) {
+    int i;
+    m_reverse();
+    
+    // Wait for a distance in mm time to shift
+    for (i = 0; i < distance; i++) {
+        _delay_ms(FOWARD_DELAY_TIME);
+    }
+    m_stop();
 }
 
 void m_stop( void ) {
     // Set PWM to be 0%
-    OCR1A=0x00;
-    OCR1B=0x00;
+    OCR1A=0x0000;
+    OCR1B=0x0000;
 }
+
+void m_control_motor(unsigned char motor, int speed) {
+    switch (motor) {
+        case LEFT:
+            OCR1A=speed;
+            break;
+        case RIGHT:
+            OCR1B=speed;
+            break;
+    }
+
+}
+

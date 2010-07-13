@@ -39,3 +39,6 @@ void m_reverseD(unsigned char distance);
 
 // Stops the robot.
 void m_stop( void );
+
+// Set given motor at given PWMed speed
+void m_control_motor(unsigned char motor, int speed);
