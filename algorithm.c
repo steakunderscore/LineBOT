@@ -26,7 +26,7 @@ unsigned char checkForStraight(unsigned char direction, unsigned char checkOther
     m_stop();
 
     if (s_check(firstDirection) == S_BLACK && s_check(otherDirection) == S_WHITE) {
-        m_turn(firstDirection);
+        m_rotate(firstDirection);
         while (s_check(firstDirection) == S_BLACK && s_check(otherDirection) == S_WHITE) {
             // DO NOTHING
         }
@@ -49,9 +49,9 @@ void turnAround() {
     while (s_check(CENTER) == S_WHITE) {
         // DO NOTHING
     }
-    m_reverse(10);
+    m_reverse(40);
 
-    m_turn(LEFT);
+    m_rotate(LEFT);
     while (s_check(LEFT) == S_WHITE) {
         // DO NOTHING
     }
@@ -63,11 +63,33 @@ void turnAround() {
 }
 
 void turnLeft() {
+    m_stop();
 
+    m_turn(LEFT);
+    while (s_check(RIGHT) == S_BLACK) {
+        // DO NOTHING
+    }
+
+    m_stop();
 }
 
 void turnRight() {
+    m_stop();
 
+    m_turn(RIGHT);
+    while (s_check(LEFT) == S_BLACK) {
+        // DO NOTHING
+    }
+
+    m_stop();
+}
+
+void testStraightAhead() {
+    m_stop();
+    m_straight(40);
+
+    if (s_check(CENTER) == S_WHITE)
+        turnAround();
 }
 
 void straightAhead() {
@@ -85,22 +107,17 @@ void straightAhead() {
         }
 
         if (center == S_WHITE) {
-            m_stop();
-            m_straight(20);
-
-            if (s_check(CENTER) == S_WHITE)
-                turnAround();
-            continue();
+            testStraightAhead();
         }
         
         if (left != S_WHITE && !checkForStraight(true)) {
-                //We're at a lefthand corner, a lefthand T junction or a cross junction.
-                turnLeft();
+            //We're at a lefthand corner, a lefthand T junction or a cross junction.
+            turnLeft();
         }
 
         if (right != S_WHITE && !checkForStraight(false)) {
-                //We're at a righthand corner, a righthand T junction or a cross junction.
-                turnRight();
+            //We're at a righthand corner, a righthand T junction or a cross junction.
+            testStraightAhead();
         }
     }
 }
