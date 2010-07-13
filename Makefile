@@ -62,7 +62,7 @@ MCU = atmega8
 #         F_CPU = 16000000
 #         F_CPU = 18432000
 #         F_CPU = 20000000
-F_CPU = 12000000
+F_CPU = 1000000
 
 
 # Output format. (can be srec, ihex, binary)
@@ -424,7 +424,7 @@ end:
 
 # Display size of file.
 HEXSIZE = $(SIZE) --target=$(FORMAT) $(TARGET).hex
-ELFSIZE = $(SIZE) --format=avr $(TARGET).elf
+ELFSIZE = $(SIZE) $(TARGET).elf
 
 sizebefore:
 	@if test -f $(TARGET).elf; then echo; echo $(MSG_SIZE_BEFORE); $(ELFSIZE); \
