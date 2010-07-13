@@ -46,7 +46,7 @@ MUX3->0 :
 0111 = ADC7 - check to see which pins using.'
 */
 unsigned char s_check(unsigned char sensor) {
-    uint8_t result= 0;
+    uint8_t result = 0;
                             //check addresses are correct
     switch (sensor) {
         case RIGHT:  ADMUX =  BIT(ADLAR);              break; // RIGHT  = ADC0 = 0000  set for right sensor ADLAR = 1
