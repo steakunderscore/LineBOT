@@ -11,6 +11,8 @@
  */
 
 #include "constants.h"
+#include "config.h"
+#include "pio.h"
 
 // Initialize the motor controller interface
 void m_initialize( void );

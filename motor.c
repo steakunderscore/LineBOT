@@ -17,6 +17,10 @@
 
 void m_initialize( void )
 {
+    /* Setup the output for the motor direction control */
+    pio_config_set (MOTOR_DRLEFT, PIO_OUTPUT);
+    pio_config_set (MOTOR_DRRIGHT, PIO_OUTPUT);
+    
     /*
        TCCR1 - Timer Counter Control Register (TIMER1)
        -----------------------------------------------
@@ -64,48 +68,54 @@ void m_initialize( void )
     DDRB|=(1<<PB1)|(1<<PB2);
 
     //Set the output to off.
-    OC1A=0;
-    OC1B=0;
+    OCR1A=0x0000;
+    OCR1B=0x0000;
 
     // Zero the counter
     TCNT1 = 0;
 }
 
-void m_turn(unsigned char direction) {
+void m_rotate(unsigned char direction) {
     // Stop the motors first to stop jittering
-    OC1A = 0xFF;
-    OC1B = 0xFF;
+    OCR1A = 0x00;
+    OCR1B = 0x00;
     if (direction == LEFT) {
         // Set the motors in opposite directions
-        PD0 = 0;
-        PD1 = 1;
+        pio_output_low (MOTOR_DRLEFT);
+        pio_output_high (MOTOR_DRRIGHT);
     }
     else if (direction == RIGHT) {
         // Set the motors in opposite directions
-        PD0 = 1;
-        PD1 = 0;
+        pio_output_high (MOTOR_DRLEFT);
+        pio_output_low (MOTOR_DRRIGHT);
     }
     // turn both the motors on
-    OC1A = 0xFF;
-    OC1B = 0xFF;
+    OCR1A = 0xFF;
+    OCR1B = 0xFF;
 }
 
-void m_foward(uint8_t speed) {
+void m_fowards( void ) {
     // Set both motors in forward direction
-    PD0 = 1;
-    PD1 = 1;
+    pio_output_high (MOTOR_DRLEFT);
+    pio_output_high (MOTOR_DRRIGHT);
 
     // Adjust the motor speeds.
-    OC1A=speed;
-    OC1B=speed;
+    OCR1A=0xFF;
+    OCR1B=0xFF;
 }
 
-void m_reverse(uint8_t speed) {
-    // Set both motors in forward direction
-    PD0 = 0;
-    PD1 = 0;
+void m_reverse( void ) {
+    // Set both motors in reverse direction
+    pio_output_low (MOTOR_DRLEFT);
+    pio_output_low (MOTOR_DRRIGHT);
 
     // Adjust the motor speeds.
-    OC1A=speed;
-    OC1B=speed;
+    OCR1A=0xFF;
+    OCR1B=0xFF;
+}
+
+void m_stop( void ) {
+    // Set PWM to be 0%
+    OCR1A=0x00;
+    OCR1B=0x00;
 }
