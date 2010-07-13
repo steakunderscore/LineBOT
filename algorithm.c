@@ -11,15 +11,18 @@
  */
 
 #include "algorithm.h"
+#include "motor.h"
+#include "sensor.h"
+#include "constants.h"
 
-void success() {
+void success( void ) {
     m_stop();
     // Celebrate
 }
 
 // Use true for left edge, false for right edge.
 // Returns true for back on track, false if there is a problem.
-unsigned char checkForStraight(unsigned char direction, unsigned char checkOther) {
+unsigned char checkForStraight(unsigned char direction) {
     unsigned char firstDirection = direction ? LEFT  : RIGHT;
     unsigned char otherDirection = direction ? RIGHT : LEFT;
     
@@ -44,12 +47,12 @@ unsigned char checkForStraight(unsigned char direction, unsigned char checkOther
     }
 }
 
-void turnAround() {
+void turnAround( void ) {
     m_reverse();
     while (s_check(CENTER) == S_WHITE) {
         // DO NOTHING
     }
-    m_reverse(40);
+    m_reverseD(40);
 
     m_rotate(LEFT);
     while (s_check(LEFT) == S_WHITE) {
@@ -62,7 +65,7 @@ void turnAround() {
     m_stop();
 }
 
-void turnLeft() {
+void turnLeft( void ) {
     m_stop();
 
     m_turn(LEFT);
@@ -73,7 +76,7 @@ void turnLeft() {
     m_stop();
 }
 
-void turnRight() {
+void turnRight( void ) {
     m_stop();
 
     m_turn(RIGHT);
@@ -84,15 +87,15 @@ void turnRight() {
     m_stop();
 }
 
-void testStraightAhead() {
+void testStraightAhead( void ) {
     m_stop();
-    m_straight(40);
+    m_straightD(40);
 
     if (s_check(CENTER) == S_WHITE)
         turnAround();
 }
 
-void straightAhead() {
+void straightAhead( void ) {
     unsigned char left, center, right;
     while (1) {
         m_straight();
