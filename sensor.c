@@ -45,48 +45,33 @@ MUX3->0 :
 0110 = ADC6
 0111 = ADC7 - check to see which pins using.'
 */
-unsigned char s_check(unsigned char sensor)
-{
+unsigned char s_check(unsigned char sensor) {
     uint8_t result= 0;
                             //check addresses are correct
-    if(sensor == LEFT) 
-    {
-        ADMUX = (BIT(ADLAR) | BIT(MUX1));
+    switch (sensor) {
+        case RIGHT:  ADMUX =  BIT(ADLAR);              break; // RIGHT  = ADC0 = 0000  set for right sensor ADLAR = 1
+        case CENTER: ADMUX = (BIT(ADLAR) | BIT(MUX0)); break; // CENTER = ADC1 = 0001
+        case LEFT:   ADMUX = (BIT(ADLAR) | BIT(MUX1)); break; // LEFT   = ADC2 = 0010
     }
     
-    else if(sensor == RIGHT)
-    {
-        ADMUX = BIT(ADLAR); //set for right sensor ADLAR = 1
+    ADCSRA |= BIT(ADSC); // starts ADC
+    
+    while(!(ADCSRA & BIT(ADIF))) {
+        //waits for ADC CONVERSION
     }
     
-    else if(sensor == CENTER)
-    {
-        ADMUX = (BIT(ADLAR)|BIT(MUX0));
-    }
-    
-    ADCSRA = ADCSRA | BIT(ADSC); // starts ADC
-    
-    while((ADCSRA & BIT(ADSC)) & BIT(ADSC)) //waits for ADC CONVERTION
-    {
-        continue;
-    }
-    
+    ADCSRA |= BIT(ADIF); // Writes a 1 to ADIF to clear it.
     
     if(ADCH < GREY_THRESH)
-    {    
         result = S_BLACK;
-    }
     else if(ADCH < WHITE_THRESH)
-    {
         result = S_GREY;
-    }    
     else
         result = S_WHITE;
     
     return result;
 }
 
-void s_initialise()
-{
-    ADCSRA = BIT(ADEN);
+void s_initialise() {
+    ADCSRA |= BIT(ADEN);
 }

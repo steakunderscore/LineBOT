@@ -26,6 +26,6 @@ unsigned char s_check(unsigned char sensor);
 /**
 initialises ADC ready for conversions
 */
-void s_initialise(void);
+void s_initialise( void );
 
 #endif
