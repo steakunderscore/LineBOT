@@ -43,6 +43,6 @@ void s_test(uint8_t sensor);
 
 /**initialises ADC ready for conversions, attempts a calibration of the sensors (not currently implemented)
 */
-void s_initialise(void);
+void s_initialise( void );
 
 #endif

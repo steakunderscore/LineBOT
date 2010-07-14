@@ -51,14 +51,15 @@ MUX3->0 :
 0111 = ADC7 - check to see which pins using.'
 */
 
-static uint8_t s_left_white; //white threshold for white sensor, calculated from initialisation
+
+/*static uint8_t s_left_white; //white threshold for white sensor, calculated from initialisation
 static uint8_t s_right_white;
-static uint8_t s_centre_black;
+static uint8_t s_centre_black;*/
 
 uint8_t s_check(uint8_t sensor)
 {
     uint8_t s_result= 0;
-    uint8_t s_adc = s_value(sensor);                       //check addresses are correct
+    uint8_t s_adc = s_value(sensor);                      
       
     
     if(s_adc < GREY_THRESH)
@@ -78,26 +79,17 @@ uint8_t s_check(uint8_t sensor)
 uint8_t s_value(uint8_t sensor)
 {
     
-    if(sensor == LEFT) 
-    {
-        ADMUX = (BIT(ADLAR) | BIT(MUX1));
+    switch (sensor) {
+        case RIGHT:  ADMUX =  BIT(ADLAR);              break; // RIGHT  = ADC0 = 0000   ADLAR = 1
+        case CENTER: ADMUX = (BIT(ADLAR) | BIT(MUX0)); break; // CENTER = ADC1 = 0001
+        case LEFT:   ADMUX = (BIT(ADLAR) | BIT(MUX1)); break; // LEFT   = ADC2 = 0010
     }
+  
     
-    else if(sensor == RIGHT)
-    {
-        ADMUX = BIT(ADLAR); //set for right sensor ADLAR = 1, fills ADHC before ADLC
-    }
+    ADCSRA |= BIT(ADSC); // starts ADC
     
-    else if(sensor == CENTER)
-    {
-        ADMUX = (BIT(ADLAR)|BIT(MUX0));
-    }
-    
-    ADCSRA = ADCSRA | BIT(ADSC); // starts ADC
-    
-    while((ADCSRA & BIT(ADSC)) & BIT(ADSC)) //waits for ADC CONVERTION
-    {
-        continue;
+    while(!(ADCSRA & BIT(ADIF))) {
+        //waits for ADC CONVERSION
     }
     
     return ADCH;
@@ -120,9 +112,10 @@ void s_test(uint8_t sensor)
 }
     
 
+
 void s_initialise()
 {
-    ADCSRA = BIT(ADEN);
+    ADCSRA |= BIT(ADEN);
     
    /* uint16_t s_average = 0;
     uint8_t s_index
