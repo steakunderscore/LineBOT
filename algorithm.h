@@ -13,3 +13,5 @@
 #include "constants.h"
 #include "motor.h"
 #include "sensor.h"
+
+void a_start( void );

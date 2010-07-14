@@ -86,7 +86,7 @@ void turnRight( void ) {
 
 void testStraightAhead( void ) {
     m_stop();
-    m_straightD(40);
+    m_forwardsD(40);
 
     if (s_check(CENTER) == S_WHITE)
         turnAround();
@@ -95,13 +95,13 @@ void testStraightAhead( void ) {
 void straightAhead( void ) {
     unsigned char left, center, right;
     while (1) {
-        m_straight();
+        m_forwards();
 
         left = s_check(LEFT);
         center = s_check(CENTER);
         right = s_check(RIGHT);
 
-        if (center == S_GRAY) {
+        if (center == S_GREY) {
             m_stop();
             success();
         }
@@ -120,4 +120,8 @@ void straightAhead( void ) {
             testStraightAhead();
         }
     }
+}
+
+void a_start( void ) {
+    straightAhead();
 }
