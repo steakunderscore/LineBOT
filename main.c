@@ -22,7 +22,12 @@
 
 /* Software entry point
  */
-int main(void)
-{
-    // Do nothing for now
+int main(void) {
+    DDRC |= BIT(PC3) | BIT(PC4) | BIT(PC5);
+    while (1) {
+        PORTC &= ~(BIT(PC3) | BIT(PC4) | BIT(PC5));
+        _delay_ms(1000.0);
+        PORTC |= BIT(PC3) | BIT(PC4) | BIT(PC5);
+        _delay_ms(1000.0);
+    }
 }
