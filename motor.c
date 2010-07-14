@@ -17,11 +17,42 @@
 
 #define FOWARD_DELAY_TIME 100
 
+void setDirection (unsigned char motor, unsigned char direction) {
+    switch (motor) {
+        case LEFT:
+            switch (direction) {
+                case FORWARD:
+                    pio_output_low(MOTOR_DRLEFT1);
+                    pio_output_high(MOTOR_DRLEFT2);
+                    break;
+                case REVERSE:
+                    pio_output_low(MOTOR_DRLEFT2);
+                    pio_output_high(MOTOR_DRLEFT1);
+                    break;
+            }
+            break;
+        case RIGHT:
+            switch (direction) {
+                case FORWARD:
+                    pio_output_low(MOTOR_DRRIGHT1);
+                    pio_output_high(MOTOR_DRRIGHT2);
+                    break;
+                case REVERSE:
+                    pio_output_low(MOTOR_DRRIGHT2);
+                    pio_output_high(MOTOR_DRRIGHT1);
+                    break;
+            }
+            break;
+    }
+}
+
 void m_initialize( void )
 {
     /* Setup the output for the motor direction control */
-    pio_config_set (MOTOR_DRLEFT, PIO_OUTPUT);
-    pio_config_set (MOTOR_DRRIGHT, PIO_OUTPUT);
+    pio_config_set (MOTOR_DRLEFT1, PIO_OUTPUT);
+    pio_config_set (MOTOR_DRLEFT2, PIO_OUTPUT);
+    pio_config_set (MOTOR_DRRIGHT1, PIO_OUTPUT);
+    pio_config_set (MOTOR_DRRIGHT2, PIO_OUTPUT);
     
     pio_config_set (MOTOR_ENLEFT, PIO_OUTPUT);
     pio_config_set (MOTOR_ENRIGHT, PIO_OUTPUT);
@@ -32,17 +63,15 @@ void m_turn(unsigned char direction) {
     m_stop();
 
     //Make sure both of the motors are if forward direction
-    pio_output_high (MOTOR_DRLEFT);
-    pio_output_high (MOTOR_DRRIGHT);
+    setDirection ( LEFT, FORWARD);
+    setDirection (RIGHT, FORWARD);
     
     switch (direction) {
         case LEFT:
-            pio_output_low (MOTOR_ENLEFT);
             pio_output_high (MOTOR_ENRIGHT);
             break;
         case RIGHT:
             pio_output_high (MOTOR_ENLEFT);
-            pio_output_low (MOTOR_ENRIGHT);
             break;  
         default:
             break;
@@ -55,13 +84,13 @@ void m_rotate(unsigned char direction) {
     
     if (direction == LEFT) {
         // Set the motors in opposite directions
-        pio_output_low (MOTOR_DRLEFT);
-        pio_output_high (MOTOR_DRRIGHT);
+        setDirection ( LEFT, REVERSE);
+        setDirection (RIGHT, FORWARD);
     }
     else if (direction == RIGHT) {
         // Set the motors in opposite directions
-        pio_output_high (MOTOR_DRLEFT);
-        pio_output_low (MOTOR_DRRIGHT);
+        setDirection ( LEFT, FORWARD);
+        setDirection (RIGHT, REVERSE);
     }
     // turn both the motors on
     pio_output_high (MOTOR_ENLEFT);
@@ -70,8 +99,8 @@ void m_rotate(unsigned char direction) {
 
 void m_forwards( void ) {
     // Set both motors in forwards direction
-    pio_output_low (MOTOR_DRLEFT);
-    pio_output_low (MOTOR_DRRIGHT);
+    setDirection ( LEFT, FORWARD);
+    setDirection (RIGHT, FORWARD);
 
     // Adjust the motor speeds to full speed
     pio_output_high (MOTOR_ENLEFT);
@@ -79,20 +108,17 @@ void m_forwards( void ) {
 }
 
 void m_forwardsD(unsigned char distance) {
-    int i;
     m_forwards();
     
     // Wait for a distance in mm time to shift
-    for (i = 0; i < distance; i++) {
-        _delay_ms(FOWARD_DELAY_TIME);
-    }
+    _delay_ms(FOWARD_DELAY_TIME * distance);
     m_stop();
 }
 
 void m_reverse( void ) {
     // Set both motors in reverse direction
-    pio_output_low (MOTOR_DRLEFT);
-    pio_output_low (MOTOR_DRRIGHT);
+    setDirection ( LEFT, REVERSE);
+    setDirection (RIGHT, REVERSE);
 
     // Adjust the motor speeds.
     pio_output_high (MOTOR_ENLEFT);
@@ -100,18 +126,15 @@ void m_reverse( void ) {
 }
 
 void m_reverseD(unsigned char distance) {
-    int i;
     m_reverse();
     
     // Wait for a distance in mm time to shift
-    for (i = 0; i < distance; i++) {
-        _delay_ms(FOWARD_DELAY_TIME);
-    }
+    _delay_ms(FOWARD_DELAY_TIME * distance);
     m_stop();
 }
 
 void m_stop( void ) {
-    // Set PWM to be 0%
+    // Turn off both motors 
     pio_output_low (MOTOR_ENLEFT);
     pio_output_low (MOTOR_ENRIGHT);
 }
