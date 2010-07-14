@@ -24,12 +24,10 @@
  */
 int main(void) {
     m_initialize();
-    pio_output_high (MOTOR_DRRIGHT1);
-    pio_output_low  (MOTOR_DRRIGHT2);
     while (1) {
-        pio_output_high (MOTOR_ENRIGHT);
-        _delay_ms(1000.0);
-        pio_output_low  (MOTOR_ENRIGHT);
-        _delay_ms(1000.0);
+        m_forwards();
+        _delay_ms(30.0);
+        m_stop();
+        _delay_ms(30.0);
     }
 }
