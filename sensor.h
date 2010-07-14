@@ -14,6 +14,7 @@
 
 #include "config.h"
 #include "constants.h"
+#include "pio.h"
 
 #define S_WHITE ((unsigned char) 1)
 #define S_BLACK ((unsigned char) 2)
@@ -30,9 +31,17 @@ unsigned char s_check(unsigned char sensor);
 @param sensor the identifier for the sensor (LEFT, RIGHT, CENTER)
 @returns 8-bit sensor value
 */
-uint8_t s_value(uint8_t sensor)
+uint8_t s_value(uint8_t sensor);
 
-/**initialises ADC ready for conversions, attempts a calibration of the sensors
+
+/** outputs a PWM wave form representation (100% = s_value 255) of the readings
+    from the specified sensor to pin 10 (PB7)/
+@param sensor the identifier for the sensor (LEFT, RIGHT, CENTER)
+*/
+void s_test(uint8_t sensor);
+
+
+/**initialises ADC ready for conversions, attempts a calibration of the sensors (not currently implemented)
 */
 void s_initialise(void);
 

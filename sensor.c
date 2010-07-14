@@ -11,11 +11,16 @@
  */
 
 #include "sensor.h"
+
+
+#include <avr/io.h>
+#include <util/delay.h>
+
 #define GREY_THRESH 128     // NOTE: these are currently might as well be random numbers and assume that complete blackness = 0, white = 256
 #define WHITE_THRESH 192
-
-/**
-ADCsRA
+#define S_TEST_PIN PIO_DEFINE(PORT_B, 7)
+/*
+ADCSRA
 ADEN 7 enables ADC
 ADSC 6 = start conversion
 ADFR 5 = free runnning (dont want)
@@ -48,9 +53,9 @@ MUX3->0 :
 
 static uint8_t s_left_white; //white threshold for white sensor, calculated from initialisation
 static uint8_t s_right_white;
-static uint8_t s_centre_black
+static uint8_t s_centre_black;
 
-unsigned char s_check(unsigned char sensor)
+uint8_t s_check(uint8_t sensor)
 {
     uint8_t s_result= 0;
     uint8_t s_adc = s_value(sensor);                       //check addresses are correct
@@ -73,7 +78,6 @@ unsigned char s_check(unsigned char sensor)
 uint8_t s_value(uint8_t sensor)
 {
     
-    //check addresses are correct
     if(sensor == LEFT) 
     {
         ADMUX = (BIT(ADLAR) | BIT(MUX1));
@@ -81,7 +85,7 @@ uint8_t s_value(uint8_t sensor)
     
     else if(sensor == RIGHT)
     {
-        ADMUX = BIT(ADLAR); //set for right sensor ADLAR = 1
+        ADMUX = BIT(ADLAR); //set for right sensor ADLAR = 1, fills ADHC before ADLC
     }
     
     else if(sensor == CENTER)
@@ -96,14 +100,31 @@ uint8_t s_value(uint8_t sensor)
         continue;
     }
     
-    return ADHC;
+    return ADCH;
 }
+
+void s_test(uint8_t sensor)
+{
+    
+    pio_config_set(S_TEST_PIN, PIO_OUTPUT);       //setup out put pin PB7 (pin 10)
+    uint8_t s_colour = s_value(sensor);
+    uint8_t s_index = 0;
+    pio_output_high (S_TEST_PIN);    //sets pin 10 high
+    for(s_index = 0; s_index < 256; s_index++)
+    {
+        if(s_index >= s_colour)
+        {
+            pio_output_low(S_TEST_PIN); //sets pin 10 low.
+        }
+    }
+}
+    
 
 void s_initialise()
 {
     ADCSRA = BIT(ADEN);
     
-    uint16_t s_average = 0;
+   /* uint16_t s_average = 0;
     uint8_t s_index
     for(i = 0; i <= 10; i++)
     {
@@ -123,5 +144,5 @@ void s_initialise()
     {
         s_average = s_average + s_value(RIGHT);
     }    
-    s_centre_black = s_average / 10;
+    s_centre_black = s_average / 10;*/
 }
