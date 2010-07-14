@@ -23,11 +23,14 @@
 /* Software entry point
  */
 int main(void) {
-    DDRC |= BIT(PC3) | BIT(PC4) | BIT(PC5);
+    m_initialize();
+    m_forwards();
     while (1) {
-        PORTC &= ~(BIT(PC3) | BIT(PC4) | BIT(PC5));
-        _delay_ms(1000.0);
-        PORTC |= BIT(PC3) | BIT(PC4) | BIT(PC5);
-        _delay_ms(1000.0);
+        pio_output_low (MOTOR_DRLEFT);
+        pio_output_low (MOTOR_DRRIGHT);
+        _delay_ms(100.0);
+        pio_output_high (MOTOR_DRLEFT);
+        pio_output_high (MOTOR_DRRIGHT);
+        _delay_ms(100.0);
     }
 }
