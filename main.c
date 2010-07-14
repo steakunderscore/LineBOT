@@ -23,7 +23,13 @@
 /* Software entry point
  */
 int main(void) {
-    m_initialize();
+    unsigned int i, sensor;
+    
     s_initialise();
-    a_start();
+    sensor = LEFT;
+
+    while (1) {
+        i = 20; while (i-- > 0) _delay_ms(30.0);
+        s_test(sensor = sensor == LEFT ? RIGHT : sensor == RIGHT ? CENTER : LEFT);
+    }
 }
