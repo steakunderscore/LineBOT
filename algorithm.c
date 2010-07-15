@@ -11,6 +11,7 @@
  */
 
 #include "algorithm.h"
+#include "avr/delay.h"
 
 void success( void ) {
     m_stop();
@@ -119,6 +120,7 @@ void straightAhead( void ) {
             //We're at a righthand corner, a righthand T junction or a cross junction.
             testStraightAhead();
         }
+        _delay_ms(30.0);
     }
 }
 
