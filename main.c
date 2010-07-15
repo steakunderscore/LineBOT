@@ -22,8 +22,16 @@
 
 /* Software entry point
  */
+void my_wait(volatile int i) {
+    while(i--);
+}
+
 int main(void) {
-    s_initialise();
+    //s_initialise();
     m_initialize();
-    a_start();
+
+    m_reverse();
+    my_wait(10000);
+    m_turn(RIGHT);
+    while(1);
 }

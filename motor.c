@@ -15,7 +15,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#define FOWARD_DELAY_TIME 100
+#define FORWARD_DELAY_TIME 100000000
 
 void setDirection (unsigned char motor, unsigned char direction) {
     switch (motor) {
@@ -108,10 +108,12 @@ void m_forwards( void ) {
 }
 
 void m_forwardsD(unsigned char distance) {
+    volatile int i;
     m_forwards();
     
-    // Wait for a distance in mm time to shift
-    _delay_ms(FOWARD_DELAY_TIME * distance);
+    // Wait for a distance in cm time to shift
+    i = FORWARD_DELAY_TIME * distance;
+    while ( i-- );
     m_stop();
 }
 
@@ -119,17 +121,20 @@ void m_reverse( void ) {
     // Set both motors in reverse direction
     setDirection ( LEFT, REVERSE);
     setDirection (RIGHT, REVERSE);
+    //PORTD |= BIT(PD0) | BIT(PD1);
+    //PORTD &= ~(BIT(PD2) | BIT(PD3));
 
     // Adjust the motor speeds.
-    pio_output_high (MOTOR_ENLEFT);
-    pio_output_high (MOTOR_ENRIGHT);
+    //pio_output_high (MOTOR_ENLEFT);
+    //pio_output_high (MOTOR_ENRIGHT);
+    PORTB |= BIT(PB1) | BIT(PB2);
 }
 
 void m_reverseD(unsigned char distance) {
     m_reverse();
     
-    // Wait for a distance in mm time to shift
-    _delay_ms(FOWARD_DELAY_TIME * distance);
+    // Wait for a distance in cm time to shift
+    _delay_ms(FORWARD_DELAY_TIME * distance);
     m_stop();
 }
 

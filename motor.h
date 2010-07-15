@@ -28,13 +28,13 @@ void m_rotate(unsigned char direction);
 // Starts the robot moving forwards.
 void m_forwards( void );
 
-// Moves the robot forward approximately distance mm.
+// Moves the robot forward approximately distance cm.
 void m_forwardsD(unsigned char distance);
 
 // Starts the robot moving backwards.
 void m_reverse( void );
 
-// Moves the robot backwards approximately distance mm.
+// Moves the robot backwards approximately distance cm.
 void m_reverseD(unsigned char distance);
 
 // Stops the robot.
