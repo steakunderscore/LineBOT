@@ -92,6 +92,8 @@ uint8_t s_value(uint8_t sensor)
         //waits for ADC CONVERSION
     }
     
+    ADCSRA |= BIT(ADIF);
+
     return ADCH;
 }
 
