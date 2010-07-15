@@ -92,23 +92,31 @@ uint8_t s_value(uint8_t sensor)
         //waits for ADC CONVERSION
     }
     
+    ADCSRA |= BIT(ADIF);
+
     return ADCH;
 }
 
 void s_test(uint8_t sensor)
 {
-    
-    pio_config_set(S_TEST_PIN, PIO_OUTPUT);       //setup out put pin PB7 (pin 10)
-    uint8_t s_colour = s_value(sensor);
-    uint8_t s_index = 0;
-    pio_output_high (S_TEST_PIN);    //sets pin 10 high
-    for(s_index = 0; s_index < 256; s_index++)
-    {
-        if(s_index >= s_colour)
-        {
-            pio_output_low(S_TEST_PIN); //sets pin 10 low.
-        }
-    }
+    uint8_t value;
+    static uint8_t time = 0;
+
+    time = !time;
+
+    DDRB |= BIT(PB0) | BIT(PB7) | BIT(PB6);
+    DDRC |= BIT(PC3) | BIT(PC4) | BIT(PC5);
+    DDRD |= BIT(PD5) | BIT(PD6) | BIT(PD7);
+
+    PORTB &= ~(BIT(PB0) | BIT(PB7) | BIT(PB6));
+    PORTC &= ~(BIT(PC3) | BIT(PC4) | BIT(PC5));
+    PORTD &= ~(BIT(PD5) | BIT(PD6) | BIT(PD7));
+
+    value = s_value(sensor);
+
+    PORTB |= ((value & BIT(7)) ? BIT(PB0) : 0 ) | ((value & BIT(3)) ? BIT(PB7) : 0 ) | ((value & BIT(2)) ? BIT(PB6) : 0 );
+    PORTC |= ((value & BIT(1)) ? BIT(PC3) : 0 ) | ((value & BIT(0)) ? BIT(PC4) : 0 ) | ((time) ? BIT(PC5) : 0);
+    PORTD |= ((value & BIT(4)) ? BIT(PD5) : 0 ) | ((value & BIT(5)) ? BIT(PD6) : 0 ) | ((value & BIT(6)) ? BIT(PD7) : 0 );
 }
     
 
