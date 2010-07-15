@@ -62,7 +62,7 @@ MCU = atmega8
 #         F_CPU = 16000000
 #         F_CPU = 18432000
 #         F_CPU = 20000000
-F_CPU = 7500000
+F_CPU = 1000000
 
 
 # Output format. (can be srec, ihex, binary)
@@ -100,7 +100,7 @@ ASRC =
 # Optimization level, can be [0, 1, 2, 3, s]. 
 #     0 = turn off optimization. s = optimize for size.
 #     (Note: 3 is not always the best optimization level. See avr-libc FAQ.)
-OPT = 0
+OPT = s
 
 
 # Debugging format.

@@ -22,16 +22,27 @@
 
 /* Software entry point
  */
-void my_wait(volatile int i) {
-    while(i--);
-}
-
 int main(void) {
+    volatile long int i;
     //s_initialise();
-    m_initialize();
+    DDRB |= 0x06;
+    DDRD |= 0x0F;
 
-    m_reverse();
-    my_wait(10000);
-    m_turn(RIGHT);
-    while(1);
+    // Rotate Left
+    PORTD &= 0xF9;
+    PORTD |= 0x09;
+    for (i = 100000; i > 0; i--) ;
+    PORTB |= 0x06;
+
+    for (i = 100000; i > 0; i--) ;
+    
+    // Stop
+    PORTB &= 0xF9;
+    for (i = 100000; i > 0; i--) ;
+
+    // Rotate Right
+    PORTD &= 0xF6;
+    PORTD |= 0x06;
+    for (i = 100000; i > 0; i--) ;
+    PORTB |= 0x06;
 }
