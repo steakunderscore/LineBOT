@@ -17,7 +17,7 @@
 #include <util/delay.h>
 
 #define GREY_THRESH 80     // NOTE: these are currently might as well be random numbers and assume that complete blackness = 0, white = 256
-#define WHITE_THRESH 128
+#define WHITE_THRESH 192
 #define S_TEST_PIN PIO_DEFINE(PORT_B, 7)
 /*
 ADCSRA
