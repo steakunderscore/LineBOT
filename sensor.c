@@ -16,8 +16,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#define GREY_THRESH 128     // NOTE: these are currently might as well be random numbers and assume that complete blackness = 0, white = 256
-#define WHITE_THRESH 192
+#define GREY_THRESH 80     // NOTE: these are currently might as well be random numbers and assume that complete blackness = 0, white = 256
+#define WHITE_THRESH 128
 #define S_TEST_PIN PIO_DEFINE(PORT_B, 7)
 /*
 ADCSRA
@@ -59,7 +59,7 @@ static uint8_t s_centre_black;*/
 uint8_t s_check(uint8_t sensor)
 {
     uint8_t s_result= 0;
-    uint8_t s_adc = s_value(sensor);                      
+    uint8_t s_adc = (uint8_t)(((uint16_t)s_value(sensor) + (uint16_t)s_value(sensor) + (uint16_t)s_value(sensor) + (uint16_t)s_value(sensor)) >> 2);
       
     
     if(s_adc < GREY_THRESH)
