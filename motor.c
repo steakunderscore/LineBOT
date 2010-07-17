@@ -15,7 +15,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#define FORWARD_DELAY_TIME 100000000
+#define FOWARD_DELAY_TIME 100
 
 void setDirection (unsigned char motor, unsigned char direction) {
     switch (motor) {
@@ -56,6 +56,9 @@ void m_initialize( void )
     
     pio_config_set (MOTOR_ENLEFT, PIO_OUTPUT);
     pio_config_set (MOTOR_ENRIGHT, PIO_OUTPUT);
+    
+    pio_output_high (MOTOR_ENRIGHT);
+    pio_output_high (MOTOR_ENLEFT);
 }
 
 void m_turn(unsigned char direction) {
@@ -63,15 +66,13 @@ void m_turn(unsigned char direction) {
     m_stop();
 
     //Make sure both of the motors are if forward direction
-    setDirection ( LEFT, FORWARD);
-    setDirection (RIGHT, FORWARD);
     
     switch (direction) {
         case LEFT:
-            pio_output_high (MOTOR_ENRIGHT);
+            setDirection (RIGHT, FORWARD);
             break;
         case RIGHT:
-            pio_output_high (MOTOR_ENLEFT);
+            setDirection ( LEFT, FORWARD);
             break;  
         default:
             break;
@@ -92,55 +93,53 @@ void m_rotate(unsigned char direction) {
         setDirection ( LEFT, FORWARD);
         setDirection (RIGHT, REVERSE);
     }
-    // turn both the motors on
-    pio_output_high (MOTOR_ENLEFT);
-    pio_output_high (MOTOR_ENRIGHT);
 }
 
 void m_forwards( void ) {
+    m_stop();
     // Set both motors in forwards direction
     setDirection ( LEFT, FORWARD);
     setDirection (RIGHT, FORWARD);
 
-    // Adjust the motor speeds to full speed
-    pio_output_high (MOTOR_ENLEFT);
-    pio_output_high (MOTOR_ENRIGHT);
 }
 
 void m_forwardsD(unsigned char distance) {
-    volatile int i;
     m_forwards();
     
-    // Wait for a distance in cm time to shift
-    i = FORWARD_DELAY_TIME * distance;
-    while ( i-- );
+    // Wait for a distance in mm time to shift
+    _delay_ms(FOWARD_DELAY_TIME * distance);
     m_stop();
 }
 
 void m_reverse( void ) {
+    m_stop();
     // Set both motors in reverse direction
     setDirection ( LEFT, REVERSE);
     setDirection (RIGHT, REVERSE);
-    //PORTD |= BIT(PD0) | BIT(PD1);
-    //PORTD &= ~(BIT(PD2) | BIT(PD3));
-
-    // Adjust the motor speeds.
-    //pio_output_high (MOTOR_ENLEFT);
-    //pio_output_high (MOTOR_ENRIGHT);
-    PORTB |= BIT(PB1) | BIT(PB2);
 }
 
 void m_reverseD(unsigned char distance) {
     m_reverse();
     
-    // Wait for a distance in cm time to shift
-    _delay_ms(FORWARD_DELAY_TIME * distance);
+    // Wait for a distance in mm time to shift
+    _delay_ms(FOWARD_DELAY_TIME * distance);
     m_stop();
 }
 
+void m_stopMotor(unsigned char motor) {
+    switch(motor) {
+        case(LEFT):
+            pio_output_low(MOTOR_DRLEFT1);
+            pio_output_low(MOTOR_DRLEFT2);
+        case(RIGHT):
+            pio_output_low(MOTOR_DRRIGHT1);
+            pio_output_low(MOTOR_DRRIGHT2);
+    }
+}
 void m_stop( void ) {
     // Turn off both motors 
-    pio_output_low (MOTOR_ENLEFT);
-    pio_output_low (MOTOR_ENRIGHT);
+    m_stopMotor(LEFT);
+    m_stopMotor(RIGHT);
+    _delay_ms(10.0);
 }
 
