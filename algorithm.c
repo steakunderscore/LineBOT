@@ -13,9 +13,9 @@
 #include "algorithm.h"
 #include "avr/delay.h"
 
-void success( void ) {
+void searchForGrey( void ) {
     m_stop();
-    // Celebrate
+
 }
 
 // Use true for left edge, false for right edge.
@@ -26,23 +26,16 @@ unsigned char checkForStraight(unsigned char direction) {
     
     m_stop();
 
-    if (s_check(firstDirection) == S_BLACK && s_check(otherDirection) == S_WHITE) {
+    while (s_check(firstDirection) == S_BLACK && s_check(otherDirection) == S_WHITE) {
         m_rotate(firstDirection);
-        while (s_check(firstDirection) == S_BLACK && s_check(otherDirection) == S_WHITE) {
-            // DO NOTHING
-        }
-        m_stop();
-        
-        if (s_check(firstDirection) == S_WHITE) {
-            return true;
-        }
-        if (s_check(firstDirection) == S_BLACK) {
-            return false;
-        }
+        _delay_ms(1.0);
+        m_forwards();
+        _delay_ms(1.0);
     }
-    else {
-        return true;
-    }
+
+    m_stop();
+    
+    return (s_check(firstDirection) == S_WHITE)
 }
 
 void turnAround( void ) {
@@ -50,14 +43,24 @@ void turnAround( void ) {
     while (s_check(CENTER) == S_WHITE) {
         // DO NOTHING
     }
-    m_reverseD(40);
-
-    m_rotate(LEFT);
-    while (s_check(LEFT) == S_WHITE) {
-        // DO NOTHING
+    m_reverseD(1);
+    if (s_check(RIGHT) == S_WHITE) {
+        m_rotate(LEFT);
+        while (s_check(LEFT) == S_WHITE) {
+            // DO NOTHING
+        }
+        while (s_check(LEFT) == S_BLACK) {
+            // DO NOTHING
+        }
     }
-    while (s_check(LEFT) == S_BLACK) {
-        // DO NOTHING
+    else if (s_check(LEFT) == S_WHITE) {
+        m_rotate(RIGHT);
+        while (s_check(RIGHT) == S_WHITE) {
+            // DO NOTHING
+        }
+        while (s_check(RIGHT) == S_BLACK) {
+            // DO NOTHING
+        }
     }
 
     m_stop();
@@ -87,7 +90,7 @@ void turnRight( void ) {
 
 void testStraightAhead( void ) {
     m_stop();
-    m_forwardsD(40);
+    m_forwardsD(4);
 
     if (s_check(CENTER) == S_WHITE)
         turnAround();
@@ -104,7 +107,7 @@ void straightAhead( void ) {
 
         if (center == S_GREY) {
             m_stop();
-            success();
+            searchForGrey();
         }
 
         if (center == S_WHITE) {
