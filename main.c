@@ -23,9 +23,9 @@
 /* Software entry point
  */
 int main(void) {
-    volatile long int i;
+    volatile unsigned char i;
     for (i = 1; i < 20; i++) {
-        m_fowardD(i);
+        m_forwardsD(i);
         m_stop();
         _delay_ms(50);
     }

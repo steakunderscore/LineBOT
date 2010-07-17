@@ -11,7 +11,7 @@
  */
 
 #include "algorithm.h"
-#include "avr/delay.h"
+#include <util/delay.h>
 
 void searchForGrey( void ) {
     m_stop();
@@ -35,7 +35,7 @@ unsigned char checkForStraight(unsigned char direction) {
 
     m_stop();
     
-    return (s_check(firstDirection) == S_WHITE)
+    return (s_check(firstDirection) == S_WHITE);
 }
 
 void turnAround( void ) {
