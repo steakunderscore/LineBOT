@@ -24,25 +24,9 @@
  */
 int main(void) {
     volatile long int i;
-    //s_initialise();
-    DDRB |= 0x06;
-    DDRD |= 0x0F;
-
-    // Rotate Left
-    PORTD &= 0xF9;
-    PORTD |= 0x09;
-    for (i = 100000; i > 0; i--) ;
-    PORTB |= 0x06;
-
-    for (i = 100000; i > 0; i--) ;
-    
-    // Stop
-    PORTB &= 0xF9;
-    for (i = 100000; i > 0; i--) ;
-
-    // Rotate Right
-    PORTD &= 0xF6;
-    PORTD |= 0x06;
-    for (i = 100000; i > 0; i--) ;
-    PORTB |= 0x06;
+    for (i = 1; i < 20; i++) {
+        m_fowardD(i);
+        m_stop();
+        _delay_ms(50);
+    }
 }
