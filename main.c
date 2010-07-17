@@ -26,7 +26,6 @@ int main(void) {
     volatile unsigned char i;
     for (i = 1; i < 20; i++) {
         m_forwardsD(i);
-        m_stop();
-        _delay_ms(50);
+        _delay_ms(150);
     }
 }
