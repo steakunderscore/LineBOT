@@ -16,3 +16,6 @@
 #define LEFT   ((unsigned char) 2)
 #define RIGHT  ((unsigned char) 3)
 #define CENTER ((unsigned char) 4)
+
+#define FORWARD ((unsigned char) 5)
+#define REVERSE ((unsigned char) 6)

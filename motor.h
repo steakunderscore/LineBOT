@@ -11,6 +11,11 @@
  */
 
 #include "constants.h"
+#include "config.h"
+#include "pio.h"
+
+// Initialize the motor controller interface
+void m_initialize( void );
 
 // Starts the robot turning in the specified direction, this keeps the
 // direction wheel still and drives the other wheel.
