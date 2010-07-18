@@ -17,8 +17,8 @@
 #include <util/delay.h>
 
 // Thresholds found 18/7 4:45
-#define GREY_THRESH 160
-#define WHITE_THRESH 224
+#define GREY_THRESH 140
+#define WHITE_THRESH 240
 #define S_TEST_PIN PIO_DEFINE(PORT_B, 7)
 /*
 ADCSRA
@@ -64,13 +64,9 @@ uint8_t s_check(uint8_t sensor)
       
     
     if(s_adc < GREY_THRESH)
-    {    
         s_result = S_BLACK;
-    }
     else if(s_adc < WHITE_THRESH)
-    {
         s_result = S_GREY;
-    }    
     else
         s_result = S_WHITE;
     
@@ -100,24 +96,11 @@ uint8_t s_value(uint8_t sensor)
 
 void s_test(uint8_t sensor)
 {
-    uint8_t value;
-    static uint8_t time = 0;
-
-    time = !time;
-
-    DDRB |= BIT(PB0) | BIT(PB7) | BIT(PB6);
-    DDRC |= BIT(PC3) | BIT(PC4) | BIT(PC5);
-    DDRD |= BIT(PD5) | BIT(PD6) | BIT(PD7);
-
-    PORTB &= ~(BIT(PB0) | BIT(PB7) | BIT(PB6));
-    PORTC &= ~(BIT(PC3) | BIT(PC4) | BIT(PC5));
-    PORTD &= ~(BIT(PD5) | BIT(PD6) | BIT(PD7));
-
-    value = s_value(sensor);
-
-    PORTB |= ((value & BIT(7)) ? BIT(PB0) : 0 ) | ((value & BIT(3)) ? BIT(PB7) : 0 ) | ((value & BIT(2)) ? BIT(PB6) : 0 );
-    PORTC |= ((value & BIT(1)) ? BIT(PC3) : 0 ) | ((value & BIT(0)) ? BIT(PC4) : 0 ) | ((time) ? BIT(PC5) : 0);
-    PORTD |= ((value & BIT(4)) ? BIT(PD5) : 0 ) | ((value & BIT(5)) ? BIT(PD6) : 0 ) | ((value & BIT(6)) ? BIT(PD7) : 0 );
+    DDRB |= 1;
+    if (s_check(sensor) == S_GREY)
+        PORTB |= 1;
+    else
+        PORTB &= ~1;
 }
     
 
@@ -125,7 +108,6 @@ void s_test(uint8_t sensor)
 void s_initialise()
 {
     ADCSRA |= BIT(ADEN);
-    
    /* uint16_t s_average = 0;
     uint8_t s_index
     for(i = 0; i <= 10; i++)

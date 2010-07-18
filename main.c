@@ -23,10 +23,15 @@
 /* Software entry point
  */
 int main(void) {
+    DDRB |= 1;
+    PORTB |= 1;
     m_initialize();
     s_initialise();
-
+    /*while(1)
+      s_test(RIGHT);*/
+    
     _delay_ms(5000.0);
-
+    
+    PORTB &= ~1;
     a_start();
 }
