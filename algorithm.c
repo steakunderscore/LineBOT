@@ -15,14 +15,18 @@
 
 void adjust( unsigned char direction1, unsigned char direction2, unsigned char sensor ) {
     unsigned int counter = 0;
+
     m_turn(direction1);
     while (s_check(sensor) != S_BLACK) {
-        _delay_ms(10.0);
+        _delay_ms(1.0);
         counter++;
     }
+
+    counter = counter >> 1;
+
     m_turn(direction2);
     while (counter-- > 0) {
-        _delay_ms(10.0);
+        _delay_ms(1.0);
     }
 }
 void adjustRight( void ) {
