@@ -21,11 +21,11 @@ void setDirection (unsigned char motor, unsigned char direction) {
     switch (motor) {
         case LEFT:
             switch (direction) {
-                case FORWARD:
+                case REVERSE:
                     pio_output_low(MOTOR_DRLEFT1);
                     pio_output_high(MOTOR_DRLEFT2);
                     break;
-                case REVERSE:
+                case FORWARD:
                     pio_output_low(MOTOR_DRLEFT2);
                     pio_output_high(MOTOR_DRLEFT1);
                     break;
@@ -33,11 +33,11 @@ void setDirection (unsigned char motor, unsigned char direction) {
             break;
         case RIGHT:
             switch (direction) {
-                case FORWARD:
+                case REVERSE:
                     pio_output_low(MOTOR_DRRIGHT1);
                     pio_output_high(MOTOR_DRRIGHT2);
                     break;
-                case REVERSE:
+                case FORWARD:
                     pio_output_low(MOTOR_DRRIGHT2);
                     pio_output_high(MOTOR_DRRIGHT1);
                     break;
