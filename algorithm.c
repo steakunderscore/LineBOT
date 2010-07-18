@@ -30,7 +30,7 @@ void adjustRight( void ) {
 }
 
 void adjustLeft( void ) {
-    adjust(LEFT, RIGHT, CENTER);
+    adjust(LEFT, RIGHT, RIGHT);
 }
 
 void goStraight( void ) {
