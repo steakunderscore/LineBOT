@@ -9,13 +9,40 @@
  * License:
  *      GNU General Public License (see LICENSE in root folder)
  */
+#ifndef SENSOR_H
+#define SENSOR_H
 
+#include "config.h"
 #include "constants.h"
+#include "pio.h"
 
 #define S_WHITE ((unsigned char) 1)
 #define S_BLACK ((unsigned char) 2)
-#define S_GRAY  ((unsigned char) 3)
+#define S_GREY  ((unsigned char) 3)
 
-// Checks the given sensor and returns S_WHITE, S_BLACK or S_GRAY depending on
-// the result.
+/**Checks the given sensor and returns S_WHITE, S_BLACK or S_GREY depending on the result.
+@param sensor the identifier for the sensor (LEFT, RIGHT, CENTER)
+@returns S_WHITE (1), S_BLACK (2), S_GREY (3)
+*/
 unsigned char s_check(unsigned char sensor);
+
+
+/** calculate raw sensor value from ADC
+@param sensor the identifier for the sensor (LEFT, RIGHT, CENTER)
+@returns 8-bit sensor value
+*/
+uint8_t s_value(uint8_t sensor);
+
+
+/** outputs a PWM wave form representation (100% = s_value 255) of the readings
+    from the specified sensor to pin 10 (PB7)/
+@param sensor the identifier for the sensor (LEFT, RIGHT, CENTER)
+*/
+void s_test(uint8_t sensor);
+
+
+/**initialises ADC ready for conversions, attempts a calibration of the sensors (not currently implemented)
+*/
+void s_initialise( void );
+
+#endif
