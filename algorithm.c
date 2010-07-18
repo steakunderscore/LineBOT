@@ -11,32 +11,26 @@
  */
 
 #include "algorithm.h"
-#include <avr/delay.h>
+#include <util/delay.h>
 
-void adjustRight( void ) {
-    unsigned int counter;
-    m_turn(RIGHT);
-    while (s_check(CENTER) != S_BLACK) {
+void adjust( unsigned char direction1, unsigned char direction2, unsigned char sensor ) {
+    unsigned int counter = 0;
+    m_turn(direction1);
+    while (s_check(sensor) != S_BLACK) {
         _delay_ms(10.0);
         counter++;
     }
-    m_turn(LEFT);
+    m_turn(direction2);
     while (counter-- > 0) {
         _delay_ms(10.0);
     }
 }
+void adjustRight( void ) {
+    adjust(RIGHT, LEFT, CENTER);
+}
 
 void adjustLeft( void ) {
-    unsigned int counter;
-    m_turn(LEFT);
-    while (s_check(RIGHT) != S_BLACK) {
-        _delay_ms(10.0);
-        counter++;
-    }
-    m_turn(RIGHT);
-    while (counter-- > 0) {
-        _delay_ms(10.0);
-    }
+    adjust(LEFT, RIGHT, CENTER);
 }
 
 void goStraight( void ) {
