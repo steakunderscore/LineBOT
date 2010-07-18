@@ -26,7 +26,7 @@ int main(void) {
     m_initialize();
     s_initialise();
 
-    _delay_ms(1000.0);
+    _delay_ms(5000.0);
 
     a_start();
 }
