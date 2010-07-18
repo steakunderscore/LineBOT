@@ -34,14 +34,14 @@ void adjustLeft( void ) {
 }
 
 void goStraight( void ) {
-    unsigned char center, right;
+    unsigned char center = S_BLACK,
+                  right  = S_BLACK;
 
-/*    if (s_check(LEFT) == S_BLACK) {
-        turnLeft();
+    m_forwards();
+    while (center == S_BLACK && right == S_BLACK) {
+        center = s_check(CENTER);
+        right = s_check(RIGHT);
     }
-*/
-    center = s_check(CENTER);
-    right = s_check(RIGHT);
 
     if (center != S_BLACK) {
         adjustRight();
