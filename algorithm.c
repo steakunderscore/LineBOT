@@ -50,12 +50,12 @@ void turnRight( void ) {
     m_stop();
     _delay_ms(100.0);
     m_forwards();
-    _delay_ms(5.0);
+    _delay_ms(20.0);
     m_stop();
     _delay_ms(100.0);
     if (s_check(CENTER) == S_WHITE && s_check(RIGHT) == S_WHITE) {
         m_rotate(RIGHT);
-        _delay_ms(900.0);
+        _delay_ms(800.0);
         _delay_ms(30.0);
         m_stop();
         if (s_check(CENTER) == S_WHITE && s_check(RIGHT) == S_WHITE) {
@@ -71,7 +71,7 @@ void turnRight( void ) {
 
 void turnLeft( void ) {
     m_rotate(LEFT);
-    _delay_ms(900.0);
+    _delay_ms(800.0);
     _delay_ms(30.0);
     m_stop();
 }
